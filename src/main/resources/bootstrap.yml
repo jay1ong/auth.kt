@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: @name@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS-HOST:nacos.gxzcdev.cn}:${NACOS-PORT:8848}
+        namespace: ${NACOS-NAMESPACE:lab}
+        group: ${NACOS-GROUP:dev}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        namespace: ${NACOS-NAMESPACE:lab}
+        group: ${spring.cloud.nacos.discovery.group}
+        file-extension: yml
+        shared-configs:
+          - dataId: application.${spring.cloud.nacos.config.file-extension}
+            group: ${spring.cloud.nacos.discovery.group}
+            refresh: true
+  profiles:
+    active: ${SPRING-PROFILES-ACTIVE:dev}
+  main:
+    banner-mode: off
