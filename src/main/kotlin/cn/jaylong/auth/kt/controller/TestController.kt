@@ -1,8 +1,6 @@
 package cn.jaylong.auth.kt.controller
 
-import cn.hutool.core.convert.Convert
 import cn.hutool.core.util.RandomUtil
-import cn.hutool.core.util.StrUtil
 import cn.jaylong.auth.kt.dto.UserRequest
 import cn.jaylong.auth.kt.exception.AuthException
 import cn.jaylong.auth.kt.payload.LoginResponse
@@ -68,18 +66,18 @@ class TestController(
     ) {
         // 更新
         var user = User()
-        if (StrUtil.isNotBlank(id)) {
-            user = jpaRepository.findById(Convert.toStr(id)).orElse(user)
+        if (id.isNotBlank()) {
+            user = jpaRepository.findById(id).orElse(User())
         }
         val random = RandomUtil.randomNumbers(32)
-        user.id = if (StrUtil.isBlank(id)) random else id
+        user.id = id.ifBlank { random }
         user.username = username
         user.password = passwordEncoder.encode(password)
         user.zoneId = "1"
         val embed = VerifierEmbed()
-        embed.value = if (StrUtil.isBlank(email)) random else email
+        embed.value = email.ifBlank { random }
         user.email = embed
-        embed.value = if (StrUtil.isBlank(phoneNumber)) random else phoneNumber
+        embed.value = phoneNumber.ifBlank { random }
         user.phoneNumber = embed
         jpaRepository.save(user)
     }
@@ -123,7 +121,7 @@ class TestController(
             loginResponse.accessToken = token
             loginResponse.id = userDetails.id
             loginResponse.username = userDetails.username
-            loginResponse.email = userDetails.email ?: ""
+            loginResponse.email = userDetails.email
             loginResponse.roles = roles
         } else {
             throw BizException(AuthException.USER_PASSWORD_ERROR)
