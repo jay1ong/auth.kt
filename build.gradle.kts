@@ -5,13 +5,13 @@ plugins {
 //    id("org.springframework.boot") version "2.7.12"
     id("org.springframework.boot") version "2.6.1"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    kotlin("jvm") version "1.8.21"
-    kotlin("plugin.spring") version "1.8.21"
+    kotlin("jvm") version "1.6.0"
+    kotlin("plugin.spring") version "1.6.0"
 
-    kotlin("plugin.serialization") version "1.8.21"
-    kotlin("plugin.jpa") version "1.8.21"
+    kotlin("plugin.serialization") version "1.6.0"
+    kotlin("plugin.jpa") version "1.6.0"
     id("idea")
-    kotlin("kapt") version "1.8.21"
+    kotlin("kapt") version "1.6.0"
     application
     kotlin("plugin.allopen") version "1.3.61"
 }
@@ -54,6 +54,9 @@ tasks.processResources {
 sourceSets {
     main {
         kotlin {
+
+        }
+        java {
             exclude("src/main/java/**")
             exclude("$buildDir/generated/sources")
         }
@@ -99,7 +102,6 @@ dependencies {
     implementation("cn.jaylong:lab-autoconfig-gradle-kt")
 
     annotationProcessor("cn.jaylong:lab-autoconfig-gradle-kt")
-//    annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.mapstruct:mapstruct-processor")
     annotationProcessor("javax.annotation:javax.annotation-api")
     annotationProcessor("org.hibernate.javax.persistence:hibernate-jpa-2.1-api")
@@ -108,7 +110,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.security:spring-security-oauth2-jose")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     kapt("com.querydsl:querydsl-apt:5.0.0:general")

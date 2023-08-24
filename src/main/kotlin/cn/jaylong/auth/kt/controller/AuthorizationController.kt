@@ -40,14 +40,13 @@ class AuthorizationController(
     @PostMapping("/register")
     fun register(
         @RequestBody request: UserRequest
-    ): String {
+    ) {
         val usernameExist: Boolean = jpaRepository.existsByUsername(request.username)
         if (usernameExist) {
             throw BizException(AuthException.USER_EXIST)
         } else {
             userService.saveUser(request.username, request.password)
         }
-        return "OK"
     }
 
     @ApiOperation("登录")

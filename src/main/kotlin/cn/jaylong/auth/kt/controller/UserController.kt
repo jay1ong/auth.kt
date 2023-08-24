@@ -4,10 +4,7 @@ import cn.jaylong.auth.kt.po.User
 import cn.jaylong.auth.kt.repository.UserJpaRepository
 import io.swagger.annotations.ApiOperation
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,14 +18,23 @@ class UserController(private var repository: UserJpaRepository) {
 
     @ApiOperation("根据用户名获取用户信息")
     @GetMapping("/username") //    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') ")
-    fun getUserByUsername(@RequestParam username: String): User {
+    fun getByUsername(@RequestParam username: String): User {
         return repository.loadUserByUsername(username)
     }
 
     @ApiOperation("获取用户列表")
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
-    fun listUser(): List<User> {
+    fun list(): List<User> {
         return repository.findAll()
     }
+
+    @ApiOperation("删除用户")
+    @DeleteMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
+    fun delete(@RequestBody ids: List<String>) {
+        repository.deleteAllById(ids)
+    }
+
 }
